@@ -1,0 +1,7 @@
+{
+  "name": "zamen",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "zamen",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}

@@ -1,0 +1,52 @@
+.create-user{
+    padding: 10px;
+}
+
+.create-fund-button{
+    padding: 10px;
+    margin-bottom: 25px;
+}
+
+.stepper{
+    margin-top: 20px;
+    padding: 10px;
+    position: relative;
+}
+
+.steps{
+    width: 100%;
+}
+
+.step{
+    width: 33%;
+    float: right;
+    text-align: center;
+    font-size: 14px;  
+    padding-top: 10px; 
+}
+
+.step p{
+    border: 1px solid #0055fe;
+    display: inline-block;
+    position: absolute;
+    top: -13px;
+    background: #fff;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+}
+
+.checked-step{
+    background: #0055fe !important;
+    line-height: 25px !important;
+}
+
+.form-error{
+    font-size: 11px;
+    color: red;
+}
+
+.error-container{
+    padding: 0 10px;
+}

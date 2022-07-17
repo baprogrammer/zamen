@@ -1,0 +1,18 @@
+<ion-item-sliding *ngFor="let user of users" >
+  <ion-item>
+    <ion-avatar>
+      <img src="https://ionicframework.com/docs/demos/api/list/avatar-finn.png">
+    </ion-avatar>
+    <ion-label>
+      <h3>{{user.fullName}}</h3>
+      <p>{{user.mobile}}</p>
+    </ion-label>
+    <ion-badge color="success" *ngIf="user.isAdmin">مدیر صندوق</ion-badge>
+  </ion-item>
+  <ion-item-options side="end" *ngIf="!user.isAdmin" (click)="deleteUser(user)" >
+    <ion-item-option color="danger">
+      <ion-icon name="trash"></ion-icon>
+      <ion-text>حذف</ion-text>
+    </ion-item-option>
+  </ion-item-options>
+</ion-item-sliding>

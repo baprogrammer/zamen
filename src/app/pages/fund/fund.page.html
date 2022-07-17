@@ -1,0 +1,238 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button color="light" ></ion-menu-button>
+    </ion-buttons>
+    <ion-title  size="small">{{currentStep.title}}</ion-title>
+    <!-- <ion-icon name="chevron-forward-outline" slot="end" class="ion-padding" ></ion-icon> -->
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content >
+
+  <ion-card class="stepper">
+    <ion-progress-bar value="{{currentStep.step*0.35}}" color="primary"></ion-progress-bar>
+    <div class="steps">
+      <div class="step" (click)="goToStep(1)" >
+          <p *ngIf="currentStep.step == 1" >1</p>
+          <p class="checked-step" *ngIf="currentStep.step > 1" ><ion-icon  name="checkmark-outline" color="light" ></ion-icon></p>
+          <span>اطلاعات</span>
+      </div>
+      <div class="step" (click)="goToStep(2)">
+          <p *ngIf="currentStep.step <= 2"  >2</p>
+          <p class="checked-step" *ngIf="currentStep.step > 2" ><ion-icon  name="checkmark-outline" color="light" ></ion-icon></p>
+          <span>اعضا</span>
+      </div>
+      <div class="step" (click)="goToStep(3)">
+          <p>3</p>
+          <span>بازبینی</span>
+      </div>
+    </div>
+  </ion-card>
+
+<div *ngIf="currentStep.step == 1 ">
+
+  <ion-item>
+    <ion-label position="floating" class="label" ><span>عنوان صندوق</span></ion-label>
+    <ion-input [(ngModel)]="fund.title"  ></ion-input>
+  </ion-item>
+  <div class="error-container">
+    <span class="form-error">{{error.fundTitle}}</span>
+  </div>
+
+  <ion-list>
+    <ion-item>
+      <ion-label position="floating" class="label" ><span>مدت خواب پول </span></ion-label>
+      <ion-select [(ngModel)]="fund.waitPeriod">
+        <ion-select-option *ngFor="let month of waitPeriods" value="{{month}}">{{month}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+  <div class="error-container">
+    <span class="form-error">{{error.fundWaitPeriod}}</span>
+  </div>
+
+  <ion-item>
+    <ion-label position="floating"  class="label" ><span>کارمزد صندوق </span></ion-label>
+    <ion-input  [(ngModel)]="fund.amount"  (keydown)="formatNumber(fund , 'amount')" ></ion-input>
+    <ion-badge class="input-badge "  slot="end" color="light" >تومان</ion-badge>
+  </ion-item>
+  <div class="error-container">
+    <span class="form-error">{{error.fundAmount}}</span>
+  </div>
+
+  <ion-item>
+    <ion-label position="floating" class="label" ><span>مبلغ هر سهم  </span></ion-label>
+    <ion-input  [(ngModel)]="fund.shareAmount"  (keydown)="formatNumber(fund , 'shareAmount')" (blur)="transformAmount($event)" ></ion-input>
+    <ion-badge class="input-badge "  slot="end" color="light" >تومان</ion-badge>
+  </ion-item>
+  <div class="error-container">
+    <span class="form-error">{{error.shareAmount}}</span>
+  </div>
+
+  <!-- ============ -->
+  <ion-item lines="none">
+    <ion-label slot="start"><span>درصد وام</span></ion-label>
+    <ion-text slot="end"><span>{{fund.loan}}%</span></ion-text>
+  </ion-item>
+  <ion-item>
+    <ion-range [(ngModel)]="fund.loan" (ionChange)="calcMax()" max="{{rangeMax + fund.loan}}"  [disabled]="rangeMax + fund.loan == 0 " ></ion-range>
+  </ion-item>
+  <!-- ====================== -->
+  <!-- ============ -->
+  <ion-item lines="none">
+    <ion-label slot="start"><span>درصد وام اضطراری</span></ion-label>
+    <ion-text slot="end"><span>{{fund.emergency}}%</span></ion-text>
+  </ion-item>
+  <ion-item>
+    <ion-range [(ngModel)]="fund.emergency" (ionChange)="calcMax()" max="{{rangeMax + fund.emergency}}"   [disabled]="rangeMax + fund.emergency == 0 " ></ion-range>
+  </ion-item>
+  <!-- ====================== -->
+  <!-- ============ -->
+  <ion-item lines="none">
+    <ion-label slot="start"><span>درصد سرمایه گذاری</span></ion-label>
+    <ion-text slot="end"><span>{{fund.investment}}%</span></ion-text>
+  </ion-item>
+  <ion-item>
+    <ion-range [(ngModel)]="fund.investment" (ionChange)="calcMax()" max="{{rangeMax + fund.investment}}"  [disabled]="rangeMax + fund.investment == 0 " ></ion-range>
+  </ion-item>
+  <!-- ====================== -->
+
+  <ion-item>
+    <div class="chart"  >
+        <highcharts-chart *ngIf="chartEnabled"
+        [Highcharts] = "highcharts" 
+        [options] = "chartOptions" 
+        style = "width: 100%; height: 400px; ">
+      </highcharts-chart>
+    </div>
+  </ion-item>
+
+  
+  
+  
+</div>
+  
+
+
+  <div *ngIf="currentStep.step == 2 ">
+    <ion-list>
+      <app-user-list-item [users]="users" (onDelete)="deleteUser($event)" ></app-user-list-item>
+    </ion-list>
+
+    <ion-modal [isOpen]="isUserModal"><ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title size="small"> {{fund.title}}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeUserModal()" ><ion-icon name="close"></ion-icon></ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        
+          <div class="create-user">
+            <ion-item>
+              <ion-label position="floating" class="label"><span>نام کاربر</span></ion-label>
+              <ion-input [(ngModel)]="user.fullName" ></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating" class="label"><span>شماره تلفن کاربر</span></ion-label>
+              <ion-input [(ngModel)]="user.mobile" ></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating" class="label" ><span>عکس</span></ion-label>
+              <ion-input [disabled]="true" ></ion-input>
+            </ion-item>
+            
+            <ion-button size="large" color="primary" expand="full" (click)="saveUser()" >ذخیره</ion-button>
+          </div>
+        
+      </ion-content></ng-template>
+    </ion-modal>
+
+    
+    <ion-card class="center" (click)="openUserModal()" >
+      <ion-icon name="add-outline" size="large"></ion-icon>
+      <p>افزودن کاربر جدید</p>
+    </ion-card>
+  </div>  
+
+
+ 
+  <div *ngIf="currentStep.step == 3">
+
+    <ion-item>
+      <ion-label>عنوان صندوق:</ion-label>
+      <ion-text>{{fund.title}}</ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-label>مدت خواب پول :</ion-label>
+      <ion-text>{{fund.waitPeriod}}</ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-label>کارمزد صندوق:</ion-label>
+      <ion-text>{{fund.amount}}</ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-label>مبلغ هر سهم:</ion-label>
+      <ion-text>{{fund.shareAmount}}</ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-label>  درصد وام :</ion-label>
+      <ion-text>{{fund.loan}}</ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-label>  درصد وام اضطراری :</ion-label>
+      <ion-text>{{fund.emergency}}</ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-label>  درصد سرمایه گذاری  :</ion-label>
+      <ion-text>{{fund.investment}}</ion-text>
+    </ion-item>
+
+    
+    <div class="chart"  >
+        <highcharts-chart *ngIf="chartEnabled"
+        [Highcharts] = "highcharts" 
+        [options] = "chartOptions" 
+        [callbackFunction]="chartCallback"
+        style = "width: 100%; height: 400px; ">
+      </highcharts-chart>
+    </div>
+
+    
+      <div class="create-fund-button">
+        <ion-button  color="primary" expand="full" size="large" (click)="createFund()" >ایجاد صندوق</ion-button>
+      </div>
+    
+      
+    
+    
+
+
+  </div>
+  
+
+</ion-content>
+
+
+<ion-footer>
+    <ion-row class="arrows" >
+    <ion-col size="6">
+      <ion-item lines="none" dir="ltr"  class="arrows" size="large" expand="full" *ngIf="currentStep.step != 1 " (click)="goToStep(currentStep.step-1)" > 
+         <ion-text slot="end">مرحله قبل</ion-text>
+         <ion-icon slot="end" name="arrow-back-outline"></ion-icon> 
+      </ion-item>
+    </ion-col>
+
+    <ion-col size="6">
+      <ion-item lines="none" class="arrows" size="large" expand="full" *ngIf="currentStep.step != 3 " (click)="goToStep(currentStep.step+1)" > 
+         <ion-text slot="end">مرحله بعد</ion-text>
+         <ion-icon slot="end" name="arrow-forward-outline"></ion-icon> 
+      </ion-item>
+    </ion-col>
+  </ion-row>
+</ion-footer>
