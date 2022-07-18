@@ -11,6 +11,9 @@ export class UserListItemComponent implements OnInit {
   @Input() users : User[] = [] ;
 
   @Output() onDelete = new EventEmitter<any>() ;
+
+  @Input() canDelete : boolean = true ;
+  @Input() showBadges : boolean = false ;
   
   deleteUser(user : any ){
     this.onDelete.emit(user) ;

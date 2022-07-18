@@ -1,0 +1,82 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button color="light" ></ion-menu-button>
+    </ion-buttons>
+    <ion-title size="small">{{fund.title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-segment (ionChange)="changeCurrentTab($event)" value="{{currentTab}}"  >
+    <ion-segment-button value="info"  >
+      <ion-label>اطلاعات صندوق</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="users" >
+      <ion-label>اعضا</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="events" >
+      <ion-label>رخدادها</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  
+
+  <div *ngIf="currentTab == 'info' ">
+    <ion-row class="info-top-items">
+      <ion-col size="4">
+        <ion-icon name="card-outline" size="large"></ion-icon>
+        <div>
+          <span>پرداخت</span>
+        </div>
+      </ion-col>
+      <ion-col size="4">
+        <ion-icon name="chatbubbles-outline" size="large"></ion-icon>
+        <div>
+          <span>ارسال پیام</span>
+        </div>
+      </ion-col>
+      <ion-col size="4">
+        <ion-icon name="chatbox-ellipses-outline" size="large"></ion-icon>
+        <div>
+          <span>پیام به مدیر</span>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-card class="emergency-box">
+      <ion-label>شما می توانید درخواست وام اضطراری نمایید</ion-label>
+      <ion-button color="primary">ارسال درخواست</ion-button>
+    </ion-card>
+
+    <ion-card class="info">
+        <p>تعداد اقساط: 10</p>
+        <p>قسط هر دوره : {{fund.shareAmount}}</p>
+        <p> مدت خواب پول  : {{fund.waitPeriod}}</p>
+        <p> درصد وام    : {{fund.loan}}</p>
+        <p>  درصد وام اضطراری    : {{fund.emergency}}</p>
+        <p>  درصد سرمایه گذاری     : {{fund.investment}}</p>
+    </ion-card>
+  </div>  
+
+  <div *ngIf="currentTab == 'users' ">
+    <app-user-list-item [users]="fund.users" [canDelete]="false" ></app-user-list-item>
+  </div>
+
+  <div *ngIf="currentTab == 'events' ">
+    <div class="fund-event">
+      <ion-label>
+        <ion-icon name="information-outline" size="small" color="primary"></ion-icon>
+        <span class="event-time">12:45</span>
+        <span class="event-title">ایجاد صندوق</span>
+      </ion-label>
+    </div>
+    <div class="fund-event">
+      <ion-label>
+        <ion-icon name="information-outline" size="small" color="primary"></ion-icon>
+        <span class="event-time">12:55</span>
+        <span class="event-title">تغییر در اعضا </span>
+      </ion-label>
+    </div>
+  </div>
+
+</ion-content>

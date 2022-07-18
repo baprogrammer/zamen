@@ -8,12 +8,16 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'folder/:id',
-    loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
-  },
-  {
     path: 'fund',
     loadChildren: () => import('./pages/fund/fund.module').then( m => m.FundPageModule)
+  },
+  {
+    path: 'fund/:id',
+    loadChildren: () => import('./pages/fund-detail/fund-detail.module').then( m => m.FundDetailPageModule)
+  },
+  {
+    path: 'funds',
+    loadChildren: () => import('./pages/funds/funds.module').then( m => m.FundsPageModule)
   }
 ];
 

@@ -8,7 +8,9 @@ import { FundPageRoutingModule } from './fund-routing.module';
 
 import { FundPage } from './fund.page';
 import { HighchartsChartModule } from 'highcharts-angular';
-import { UserListItemComponent } from 'src/app/components/user/user-list-item/user-list-item.component';
+import { ComponentsModule } from 'src/app/modules/components.module';
+
+
 
 
 @NgModule({
@@ -18,8 +20,9 @@ import { UserListItemComponent } from 'src/app/components/user/user-list-item/us
     IonicModule,
     FundPageRoutingModule ,
     HighchartsChartModule ,
+    ComponentsModule
     
   ],
-  declarations: [FundPage , UserListItemComponent]
+  declarations: [FundPage ]
 })
 export class FundPageModule {}

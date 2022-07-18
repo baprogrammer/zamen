@@ -1,0 +1,55 @@
+ion-segment{
+    --background : #0055fe ;
+}
+
+ion-segment-button{
+    --color: #fff;
+    --color-checked: #444;
+    --background-checked: #fff;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 7px;
+    margin: 10px 5px;
+    max-height: 30px !important;
+    min-height: 30px !important;
+    border: none;
+    letter-spacing: 0;
+    --indicator-color: transparent;
+}
+
+
+.info-top-items{
+    margin-top: 20px;
+    text-align: center;
+}
+
+.emergency-box{
+    padding: 20px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.info{
+    padding: 10px;
+}
+
+.emergency-box ion-button{
+    margin-top: 20px;
+}
+
+.fund-event{
+    padding: 10px;
+}
+
+.fund-event ion-icon{
+    float: right;
+    margin-top: 2px;
+}
+
+.event-time{
+    color: #666;
+}
+
+.event-title{
+    padding-right: 10px;
+}

@@ -6,13 +6,19 @@
     <ion-label>
       <h3>{{user.fullName}}</h3>
       <p>{{user.mobile}}</p>
+      <div *ngIf="!canDelete">
+        <ion-badge color="danger" >پرداخت نشده</ion-badge>    
+      </div>
     </ion-label>
-    <ion-badge color="success" *ngIf="user.isAdmin">مدیر صندوق</ion-badge>
+    <ion-badge color="success" *ngIf="user.isAdmin  && canDelete">مدیر صندوق</ion-badge>
   </ion-item>
-  <ion-item-options side="end" *ngIf="!user.isAdmin" (click)="deleteUser(user)" >
-    <ion-item-option color="danger">
-      <ion-icon name="trash"></ion-icon>
-      <ion-text>حذف</ion-text>
-    </ion-item-option>
-  </ion-item-options>
+
+  <div *ngIf="canDelete">
+    <ion-item-options side="end" *ngIf="!user.isAdmin" (click)="deleteUser(user)">
+      <ion-item-option color="danger">
+        <ion-icon name="trash"></ion-icon>
+        <ion-text>حذف</ion-text>
+      </ion-item-option>
+    </ion-item-options>
+  </div>
 </ion-item-sliding>

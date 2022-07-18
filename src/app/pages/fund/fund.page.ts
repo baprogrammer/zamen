@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { GeneralService } from 'src/app/services/general.service';
 import * as Highcharts from 'highcharts';
 import { User } from 'src/app/models/user.model';
+import { Router } from '@angular/router';
+
 
 
 
@@ -67,7 +69,7 @@ export class FundPage implements OnInit {
     error : any = {};
     
 
-  constructor( private generalService : GeneralService  ) {
+  constructor( private generalService : GeneralService  , private router : Router  ) {
     this.goToStep(1 , true);
     for(let i = 1 ; i <= 12 ; i++){
       this.waitPeriods.push(i+" ماه");
@@ -248,6 +250,24 @@ export class FundPage implements OnInit {
       result = true ;
     }
     return result ;
+  }
+
+  createFund(){
+    let funds : any = localStorage.getItem("funds") ;
+    if(!funds){
+      funds = [] ;
+    }
+    else{
+      funds = JSON.parse(funds);
+    }
+    let time = new Date().getTime();
+    this.fund.id = time ;
+    this.fund.users = this.users ;
+    funds.push(this.fund);
+    funds = JSON.stringify(funds);
+    localStorage.setItem("funds" , funds);
+    this.generalService.presentToast("صندوق با موفقیت ایجاد شد");
+    this.router.navigate(['/fund' , time ]);
   }
 
   
